@@ -10,4 +10,4 @@
 https://github.com/user-attachments/assets/382e830b-9b01-4588-9b27-57f068b6abe0
 
 
-<img width="1210" height="907" alt="Arduino Setup" src="https://github.com/user-attachments/assets/d16c3c04-1c93-4546-bae0-1a1e93b4fef5" />
+<img width=" 605" height="454" alt="Arduino Setup" src="https://github.com/user-attachments/assets/d16c3c04-1c93-4546-bae0-1a1e93b4fef5" />
