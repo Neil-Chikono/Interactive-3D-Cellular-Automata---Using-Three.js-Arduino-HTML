@@ -25,7 +25,7 @@ Navigating The Virtual Space:
 Creating the Cross cube in blender:
 <img width="3562" height="2090" alt="Creating the Cross cube in blender" src="https://github.com/user-attachments/assets/c9321622-90ad-4d2f-af2e-b1cac0055579" />
 
-This Project was inspired by my interest in fractals particularly the Menger Sponge. I wanted to explore ways that i could intergrate its infinite fractal expansion in a project without creating recursive loops going into overload. I found that It would be very interesting to intergrate this concept with cellular automata, an area I have already been actively investigating. This allowed the dynamism of the fractal to be carried forward the contious generation and configuration of states that is in xellular automata.     
+This Project was inspired by my interest in fractals particularly the Menger Sponge. I wanted to explore ways that i could intergrate its infinite fractal expansion in a project without creating recursive loops going into overload. I found that It would be very interesting to intergrate this concept with cellular automata, an area I have already been actively investigating. This allowed the dynamism of the fractal to be carried forward the contious generation and configuration of states that is in Cellular automata.     
 
 <img width="723" height="540" alt="Screenshot 2026-10-10 at 17 22 51" src="https://github.com/user-attachments/assets/21bb10fa-4131-4076-9217-7dbf656ba506" />
 
