@@ -6,7 +6,7 @@ How To Use -
 
 
 
-<img width="289" height="216" alt="Screenshot 2026-10-10 at 17 22 51" src="https://github.com/user-attachments/assets/21bb10fa-4131-4076-9217-7dbf656ba506" />
+<img width="723" height="540" alt="Screenshot 2026-10-10 at 17 22 51" src="https://github.com/user-attachments/assets/21bb10fa-4131-4076-9217-7dbf656ba506" />
 
 
 
