@@ -5,6 +5,11 @@ How To Use -
 
 
 
+
+<img width="1446" height="1080" alt="Screenshot 2026-10-10 at 17 22 51" src="https://github.com/user-attachments/assets/21bb10fa-4131-4076-9217-7dbf656ba506" />
+
+
+
 Equipment -
 
 
