@@ -51,6 +51,7 @@ https://github.com/user-attachments/assets/382e830b-9b01-4588-9b27-57f068b6abe0
 <img width=" 605" height="454" alt="Arduino Setup" src="https://github.com/user-attachments/assets/d16c3c04-1c93-4546-bae0-1a1e93b4fef5" />
 
 
+A new and improved interface that allows you to connect to the arduino and see if the connection is active 
 
 <img width="1766" height="900" alt="Screenshot 2026-10-10 at 19 13 41" src="https://github.com/user-attachments/assets/b65a601d-c040-4655-b222-bf7ce0617331" />
 
