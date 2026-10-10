@@ -4,7 +4,8 @@
 How To Use -
 
 
-
+The switch Buttons on the controller control the Play/Pause button and the reset. 
+Whilst the Joysticks allow to manoeuvre around the space. 
 
 
 
@@ -32,6 +33,11 @@ This Project was inspired by my interest in fractals particularly the Menger Spo
 
 
 Equipment -
+Two 2 Joysticks 
+A breadboard 
+Arduino Mega 2560
+Wireing
+
 
 
 
