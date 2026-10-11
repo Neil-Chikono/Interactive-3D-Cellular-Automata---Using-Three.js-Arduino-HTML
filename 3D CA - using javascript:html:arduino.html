@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Game of Life - Three.js</title>
+    <style>
+        body { 
+            background-image: url('seal-background.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: Arial, sans-serif;
+        }
+        #container { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #377d39;
+            background-image: url('green greeeeen.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        button {
+            margin: 5px;
+            padding: 8px 15px;
+            background: #4CAF50;
+            background-image: url('green dots.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="loading">Loading model...</div>
+    <div id="controls">
+        <button id="playPause">Play</button>
+        <button id="next">Next Generation</button>
+        <button id="reset">Reset</button>
+        <button id="random">Random</button>
+        <div>Generation: <span id="generation">0</span></div>
+        <div>Alive: <span id="aliveCount">0</span></div>
+         <button id="connectArduino">Connect Arduino</button>
+         <p id="arduinoStatus">Not connected</p>
+    </div>
+
+   
+    <!-- this interface allows for me to generate and rest the configuration and produce random varible states -->
+
+
+    <!-- Import Three.js and GLTF loader -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+
+
+//The code creates a 3D cellular automata simulation using Three.js, where each cell exists in a 3D grid (6x6x6) and follows rules inspired by Conway's classic Game of Life. 
+// Each cell can be either “alive” with a value of 1 or ”dead” with a value of 1. This state is stored in two 3d arrays called gameState (current generation) and nextState 
+// (the generation being calculated). In this simulation, I use a GLB model (corrsscube.glb) for each living cell, or if that fails to load, simple green coloured cubes are used.
+//The main mechanic driving this game is the neighbour counting function, which checks all the 16 surrounding cells (a 3x3x3 cube minus the centre) to determine how many neighbours are alive. 
+// Based on this count, the evolution rules are applied.
+
+
+
+// here i can retrive serial data from the arduino for my javascript 
+
+
+
+
+const connectButton = document.getElementById("connectArduino");
+const statusText = document.getElementById("arduinoStatus");
+
+const playPause = document.getElementById("playPause");
+const random = document.getElementById("random");
+
+// the previous state of the button is read as off before connecting to the serial monitor
+
+let previousPlayPauseState = 1;
+let previousRandomState = 1;
+
+connectButton.addEventListener("click", async () => {
+  try {
+    const port = await navigator.serial.requestPort();
+
+    await port.open({ baudRate: 9600 });
+
+    statusText.textContent = "Connected";
+
+    const reader = port.readable.getReader();
+    const decoder = new TextDecoder();
+
+    let buffer = "";
+
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split(/\r?\n/);
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          const values = line.trim().split(",").map(Number);
+
+          // Expecting: switch1,switch2
+          if (
+            values.length === 2 &&
+            values.every(Number.isFinite)
+          ) {
+            const [switch1, switch2] = values;
+
+            // Switch 1: Play/Pause
+            if (switch1 === 0 && previousPlayPauseState === 1) {
+              playPause.click();
+            }
+
+            // Switch 2: Random
+            if (switch2 === 0 && previousRandomState === 1) {
+              random.click();
+            }
+
+            previousPlayPauseState = switch1;
+            previousRandomState = switch2;
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  } catch (error) {
+    statusText.textContent = `Connection error: ${error.message}`;
+    console.error(error);
+  }
+});
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Game state
+            const gridSize = 9; // Smaller grid for better performance
+            const spacing = 2;
+            let gameState = [];
+            let nextState = [];
+            let isPlaying = false;
+            let generation = 0;
+            let animationId = null;
+            
+            // Scene setup
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x111122);
+            
+            // Camera setup
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(15, 15, 15);
+            
+            // Renderer setup
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            document.getElementById('container').appendChild(renderer.domElement);
+            
+            // Add orbit controls
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 15, 10);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // Point light for better 3D effect
+            const pointLight = new THREE.PointLight(0x4488ff, 0.5, 50);
+            pointLight.position.set(5, 10, 5);
+            scene.add(pointLight);
+
+            // Store all cell objects
+            let cellObjects = [];
+            let originalModel = null;
+
+            // Initialize game state
+            function initializeGameState() {
+                gameState = [];
+                nextState = [];
+                for (let x = 0; x < gridSize; x++) {
+                    gameState[x] = [];
+                    nextState[x] = [];
+                    for (let y = 0; y < gridSize; y++) {
+                        gameState[x][y] = [];
+                        nextState[x][y] = [];
+                        for (let z = 0; z < gridSize; z++) {
+                            gameState[x][y][z] = 0; // 0 = dead, 1 = alive
+                            nextState[x][y][z] = 0;
+                        }
+                    }
+                }
+            }
+
+            // Count living neighbors in 3D (26 neighbors)
+            function countLivingNeighbors(x, y, z) {
+                let count = 0;
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        for (let dz = -1; dz <= 1; dz++) {
+                            // Skip the cell itself
+                            if (dx === 0 && dy === 0 && dz === 0) continue;
+                            
+                            const nx = x + dx;
+                            const ny = y + dy;
+                            const nz = z + dz;
+                            
+                            // Check bounds
+                            if (nx >= 0 && nx < gridSize && 
+                                ny >= 0 && ny < gridSize && 
+                                nz >= 0 && nz < gridSize) {
+                                count += gameState[nx][ny][nz];
+                            }
+                        }
+                    }
+                }
+                return count;
+            }
+
+            // 3D Game of Life rules
+            function computeNextGeneration() {
+                let aliveCount = 0;
+                
+                for (let x = 0; x < gridSize; x++) {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let z = 0; z < gridSize; z++) {
+                            const neighbors = countLivingNeighbors(x, y, z);
+                            const isAlive = gameState[x][y][z];
+                            
+                            // 3D Game of Life rules (can be adjusted)
+                            if (isAlive === 1) {
+                                // Cell survives with 4-6 neighbors (adjustable)
+                                nextState[x][y][z] = (neighbors >= 4 && neighbors <= 6) ? 1 : 0;
+                            } else {
+                                // Cell is born with exactly 5 neighbors (adjustable)
+                                nextState[x][y][z] = (neighbors === 5) ? 1 : 0;
+                            }
+                            
+                            aliveCount += nextState[x][y][z];
+                        }
+                    }
+                }
+                
+                // Swap buffers
+                const temp = gameState;
+                gameState = nextState;
+                nextState = temp;
+                
+                generation++;
+                updateDisplay();
+                return aliveCount;
+            }
+
+            // Update visual representation
+            function updateVisuals() {
+                const offset = (gridSize - 1) * spacing * 0.5;
+                let aliveCount = 0;
+                
+                for (let x = 0; x < gridSize; x++) {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let z = 0; z < gridSize; z++) {
+                            const index = x * gridSize * gridSize + y * gridSize + z;
+                            const cell = cellObjects[index];
+                            
+                            if (cell) {
+                                const isAlive = gameState[x][y][z];
+                                
+                                // Show/hide based on state
+                                cell.visible = isAlive === 1;
+                                
+                                // Optional: Add visual effects
+                                if (isAlive === 1) {
+                                    aliveCount++;
+                                    // Pulse animation for living cells
+                                    const scale = 1 + Math.sin(Date.now() * 0.001 + x + y + z) * 0.1;
+                                    cell.scale.set(scale, scale, scale);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                document.getElementById('aliveCount').textContent = aliveCount;
+            }
+
+            // Create initial grid of cells
+            function createGrid() {
+                // Clear existing cells
+                cellObjects.forEach(cell => scene.remove(cell));
+                cellObjects = [];
+                
+                const offset = (gridSize - 1) * spacing * 0.5;
+                
+                // Create placeholder geometry if model isn't loaded
+                const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                const material = new THREE.MeshPhongMaterial({ 
+                    color: 0x00ff88,
+                    shininess: 100 
+                });
+                
+                for (let x = 0; x < gridSize; x++) {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let z = 0; z < gridSize; z++) {
+                            let cell;
+                            
+                            if (originalModel) {
+                                cell = originalModel.clone();
+                                cell.scale.set(0.3, 0.3, 0.3);
+                            } else {
+                                cell = new THREE.Mesh(geometry, material);
+                            }
+                            
+                            cell.position.set(
+                                x * spacing - offset,
+                                y * spacing - offset,
+                                z * spacing - offset
+                            );
+                            
+                            cell.visible = false; // Start hidden
+                            scene.add(cell);
+                            cellObjects.push(cell);
+                        }
+                    }
+                }
+            }
+
+            // Randomize initial state
+            function randomizeState() {
+                for (let x = 0; x < gridSize; x++) {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let z = 0; z < gridSize; z++) {
+                            // Lower probability for more interesting patterns
+                            gameState[x][y][z] = Math.random() < 0.2 ? 1 : 0;
+                        }
+                    }
+                }
+                updateVisuals();
+                generation = 0;
+                updateDisplay();
+            }
+
+            // Reset to empty state
+            function resetState() {
+                initializeGameState();
+                updateVisuals();
+                generation = 0;
+                updateDisplay();
+            }
+
+            // Update display elements
+            function updateDisplay() {
+                document.getElementById('generation').textContent = generation;
+            }
+
+            // Game loop
+            function gameLoop() {
+                if (isPlaying) {
+                    computeNextGeneration();
+                    updateVisuals();
+                }
+            }
+
+            // Load GLTF model (optional)
+            const loader = new THREE.GLTFLoader();
+            const modelUrl = 'crosscube.glb'; // Your model path
+            
+            loader.load(
+                modelUrl,
+                (gltf) => {
+                    originalModel = gltf.scene;
+                    // Initialize and create grid with the loaded model
+                    initializeGameState();
+                    createGrid();
+                    randomizeState();
+                    document.getElementById('loading').style.display = 'none';
+                },
+                (xhr) => {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                (error) => {
+                    console.error('Error loading model, using fallback cubes', error);
+                    // Use fallback cubes if model fails to load
+                    initializeGameState();
+                    createGrid();
+                    randomizeState();
+                    document.getElementById('loading').style.display = 'none';
+                }
+            );
+
+            // Control event handlers
+            document.getElementById('playPause').addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                document.getElementById('playPause').textContent = isPlaying ? 'Pause' : 'Play';
+            });
+
+            document.getElementById('next').addEventListener('click', () => {
+                computeNextGeneration();
+                updateVisuals();
+            });
+
+            document.getElementById('reset').addEventListener('click', resetState);
+            document.getElementById('random').addEventListener('click', randomizeState);
+
+            const textureLoader = new THREE.TextureLoader();
+        textureLoader.load('h tree 2 .png', function(texture) {
+            scene.background = texture;
+        });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                gameLoop();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        });
+    </script>
+</body>
+</html>
