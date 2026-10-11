@@ -9,6 +9,17 @@ Interactive-3D-Cellular-Automata---Using-Three.js-Arduino-HTML
 <br>
 
 Overview:
+<P>The code creates a 3D cellular automata simulation using Three.js, where each cell exists in a 3D grid (6x6x6) and follows rules inspired by Conway's classic Game of Life. Each cell can be either “alive” with a value of 1 or ”dead” with a value of 1. This state is stored in two 3d arrays called gameState (current generation) and nextState (the generation being calculated). In this simulation, I use a GLB model (corrsscube.glb) for each living cell, or if that fails to load, simple green coloured cubes are used.</P>
+
+<p>The main mechanic driving this game is the neighbour counting function, which checks all the 16 surrounding cells (a 3x3x3 cube minus the centre) to determine how many neighbours are alive. Based on this count, the evolution rules are applied. </p>
+
+<p> A living cell survives if it has 4-6 living neighbours, and a dead cell is born if it has exactly 5 living neighbours. These rules differ from the classic 2D Game of Life because 3D cells have more neighbours, requiring different thresholds to produce interesting patterns. </p>
+
+<p> I have then created a user interface that features my own graphic design. The user controls the simulation through four buttons: Play/Pause toggles automatic generation advancement, Next manually steps forward one generation, Reset clears all cells to dead, and Random seeds the grid with a random pattern (20% of cells alive). The interface also displays the current generation number and count of living cells. </p>
+
+
+
+
 <P>
 Grid Size 6×6×6 = 216 cells
 </P>
@@ -46,11 +57,10 @@ I am now working on an iteration that allows the joysticks to manoeuvre around t
 <br>
 
 Equipment -
-Two 2 Joysticks 
-A breadboard 
-Arduino Mega 2560
-Wireing
-
+<p>Two 2 Joysticks </p> 
+<P>A breadboard </P>
+<P> Arduino Mega 2560 </P>
+<P> Wireing </P>
 
 <br>
 
