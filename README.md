@@ -62,3 +62,10 @@ A new and improved interface that allows you to connect to the arduino and see i
 <img width="900" height="675" alt="final set up" src="https://github.com/user-attachments/assets/a5e3a4f6-8d25-482b-98b9-9d9f80653df2" />
 
 
+
+
+https://github.com/user-attachments/assets/a8160012-e5fe-422b-91a6-01b2ea238e3c
+
+
+
+
