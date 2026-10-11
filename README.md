@@ -18,18 +18,6 @@ Overview:
 <p> I have then created a user interface that features my own graphic design. The user controls the simulation through four buttons: Play/Pause toggles automatic generation advancement, Next manually steps forward one generation, Reset clears all cells to dead, and Random seeds the grid with a random pattern (20% of cells alive). The interface also displays the current generation number and count of living cells. </p>
 
 
-
-
-<P>
-Grid Size 6×6×6 = 216 cells
-</P>
-<P>
-Uses gameState and nextState to avoid conflicts
-</P>
-<P>
-If GLB model fails to load, it uses coloured cubes instead
-</P>
-
 Motivation: 
 <P>This Project was inspired by my interest in fractals, particularly the Menger Sponge.
 a famous three-dimensional mathematical curve and fractal (a repeating geometric shape). by Karl Menger in 1926. </P>
