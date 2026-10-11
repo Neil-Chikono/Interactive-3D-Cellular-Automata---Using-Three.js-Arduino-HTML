@@ -1,6 +1,12 @@
 
 <img width="3562" height="2050" alt="Digital User Interface for 3D Cellular Automata -" src="https://github.com/user-attachments/assets/23cccb17-2cbd-4c84-9b7a-87ab7e2e163a" />
 
+<br>
+<br>
+
+<img width="900" height="675" alt="final set up" src="https://github.com/user-attachments/assets/a5e3a4f6-8d25-482b-98b9-9d9f80653df2" />
+<br>
+
 Overview:
 
 
@@ -27,14 +33,12 @@ Arduino Mega 2560
 Wireing
 
 
-
 <br>
 
 <img width="3562" height="2050" alt="Navigating The Virtual Space" src="https://github.com/user-attachments/assets/63050394-6259-49d1-84b8-04b231e19ad1" />
  <br>
 
-<img width="900" height="675" alt="final set up" src="https://github.com/user-attachments/assets/a5e3a4f6-8d25-482b-98b9-9d9f80653df2" />
-<br>
+
 demonstration: 
 
 https://github.com/user-attachments/assets/382e830b-9b01-4588-9b27-57f068b6abe0
@@ -42,6 +46,7 @@ https://github.com/user-attachments/assets/382e830b-9b01-4588-9b27-57f068b6abe0
 
 
 https://github.com/user-attachments/assets/a8160012-e5fe-422b-91a6-01b2ea238e3c
+
 
 
 
