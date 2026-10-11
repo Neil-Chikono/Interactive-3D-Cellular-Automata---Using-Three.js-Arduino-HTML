@@ -21,7 +21,7 @@ If GLB model fails to load, it uses coloured cubes instead
 
 Motivation: 
 <P>This Project was inspired by my interest in fractals, particularly the Menger Sponge.
-</P>a famous three-dimensional mathematical curve and fractal (a repeating geometric shape). by Karl Menger in 1926. 
+a famous three-dimensional mathematical curve and fractal (a repeating geometric shape). by Karl Menger in 1926. </P>
 
 <P> I wanted to explore ways that I could explore its infinite fractal expansion in a graphics project without creating recursive loops preventing compilation. At this time, I was also exploring the concept of cellular automata. This allows the recursive nature of the fractal to be achieved through the continuous generation and configuration of states that are in Cellular automata.</P>
 
