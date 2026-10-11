@@ -45,7 +45,7 @@ I am now working on an iteration that allows the joysticks to manoeuvre around t
 <br>
 
 Equipment -
-<p>Two 2 Joysticks </p> 
+<p>Two Joysticks </p> 
 <P>A breadboard </P>
 <P> Arduino Mega 2560 </P>
 <P> Wireing </P>
