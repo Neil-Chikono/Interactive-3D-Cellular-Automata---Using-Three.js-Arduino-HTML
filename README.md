@@ -23,7 +23,8 @@ Creating the Cross cube in blender:
 
 Technical implementation:
 The switch Buttons on the controller control the Play/Pause button and the random button to gnerate a new configuration. 
-I am now working on an iteration that allows the joysticks to manourve around the space. The interface that allows you to connect to the Arduino and see if the connection is active
+I am now working on an iteration that allows the joysticks to manoeuvre around the space. The interface that allows you to connect to the Arduino and see if the connection is active. In this project I include an LED to be turned without code on the breadboad to ensure that I know there is working voltage running through the breadboard. 
+
 <br>
 
 Equipment -
@@ -36,10 +37,11 @@ Wireing
 <br>
 
 <img width="3562" height="2050" alt="Navigating The Virtual Space" src="https://github.com/user-attachments/assets/63050394-6259-49d1-84b8-04b231e19ad1" />
+
  <br>
 
 
-demonstration: 
+Demonstration: 
 
 https://github.com/user-attachments/assets/382e830b-9b01-4588-9b27-57f068b6abe0
 
