@@ -20,7 +20,16 @@ If GLB model fails to load, it uses coloured cubes instead
 </P>
 
 Motivation: 
-This Project was inspired by my interest in fractals particularly the Menger Sponge. I wanted to explore ways that i could intergrate its infinite fractal expansion in a project without creating recursive loops going into overload. I found that It would be very interesting to intergrate this concept with cellular automata, an area I have already been actively investigating. This allowed the dynamism of the fractal to be carried forward the contious generation and configuration of states that is in Cellular automata.   
+<P>This Project was inspired by my interest in fractals, particularly the Menger Sponge.
+</P>a famous three-dimensional mathematical curve and fractal (a repeating geometric shape). by Karl Menger in 1926. 
+
+<P> I wanted to explore ways that I could explore its infinite fractal expansion in a graphics project without creating recursive loops preventing compilation. At this time, I was also exploring the concept of cellular automata. This allows the recursive nature of the fractal to be achieved through the continuous generation and configuration of states that are in Cellular automata.</P>
+
+<P>This is a discrete, abstract model of computation consisting of a regular grid of cells, where each cell changes its state over discrete time steps by following a simple set of local rules based on its own state and the states of its neighbouring cells. This approach was famously adopted into the 2D game of life by John Conway. To date, many variations have been created using this concept.</P> 
+
+<P>What I enjoy about this game is that the user does not have any true control over winning; they can simply only generate an initial condition and then watch the outcome. The Aim of this game becomes to observe and identify behaviours of the cellular automata.</P> 
+  
+
 <br>
 <img width="723" height="540" alt="Screenshot 2026-10-10 at 17 22 51" src="https://github.com/user-attachments/assets/21bb10fa-4131-4076-9217-7dbf656ba506" />
 <br>
