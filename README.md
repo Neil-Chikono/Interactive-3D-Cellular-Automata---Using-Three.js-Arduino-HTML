@@ -10,6 +10,10 @@ Interactive-3D-Cellular-Automata---Using-Three.js-Arduino-HTML
 
 Overview:
 
+Grid Size 6×6×6 = 216 cells
+Uses gameState and nextState to avoid conflicts
+If GLB model fails to load, it uses coloured cubes instead
+
 
 Motivation: 
 This Project was inspired by my interest in fractals particularly the Menger Sponge. I wanted to explore ways that i could intergrate its infinite fractal expansion in a project without creating recursive loops going into overload. I found that It would be very interesting to intergrate this concept with cellular automata, an area I have already been actively investigating. This allowed the dynamism of the fractal to be carried forward the contious generation and configuration of states that is in Cellular automata.   
